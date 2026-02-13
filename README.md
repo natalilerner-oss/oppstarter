@@ -69,8 +69,17 @@ oppstarter/
   - יצירת נתוני דמו
   - בדיקת syntax
 
-- **Deploy**: רץ אוטומטית על main branch
-  - ניתן לקנפג עבור Streamlit Cloud, AWS, Azure, GCP או פלטפורמות אחרות
+- **PR Checks**: בדיקות אוטומטיות לכל Pull Request
+  - אימות מבנה ה-PR
+  - בדיקת תיאור ו-commits
+  - סימון מוכן לסקירה
+
+- **Deploy**: פריסה אוטומטית ל-Render על main branch
+  - בנייה וטסט של Docker image
+  - פריסה אוטומטית ל-production
+  - Health checks ומעקב
+
+📘 למידע מפורט על תהליך ה-PR והפריסה, ראה [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ## 📋 דרישות
 

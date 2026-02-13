@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: oppstarter
+    runtime: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: AI_ENABLED
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+    healthCheckPath: /_stcore/health
+    autoDeploy: true

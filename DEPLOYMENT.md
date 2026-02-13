@@ -149,7 +149,10 @@ To configure branch protection for `main`:
 ### Merge Conflicts
 - Rebase your branch on latest main/develop
 - Resolve conflicts locally
-- Force push (if needed): `git push --force-with-lease`
+- Push changes (if needed): `git push --force-with-lease`
+  - ⚠️ **Warning**: Only use force push on your own feature branches
+  - Never force push to shared branches (main, develop)
+  - Use `--force-with-lease` instead of `--force` for safety
 
 ## Best Practices
 

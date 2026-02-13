@@ -13,10 +13,18 @@ for workflow in .github/workflows/*.yml; do
     echo "Checking $workflow..."
     
     # Validate YAML syntax using Python with proper file handling
-    if python3 -c "import yaml; f=open('$workflow'); yaml.safe_load(f); f.close()" 2>/dev/null; then
-        echo "✅ $workflow is valid"
-    else
-        echo "❌ Invalid YAML in $workflow"
+    python3 << EOF
+import yaml
+try:
+    with open('$workflow') as f:
+        yaml.safe_load(f)
+    print("✅ $workflow is valid")
+except Exception as e:
+    print(f"❌ Invalid YAML in $workflow: {e}")
+    exit(1)
+EOF
+    
+    if [ $? -ne 0 ]; then
         exit 1
     fi
     

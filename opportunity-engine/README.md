@@ -43,3 +43,6 @@ pytest
 ```bash
 python sample_data/generate_demo_excel.py
 ```
+# opportunity-engine
+
+Scaffold directory created for the opportunity engine workspace.

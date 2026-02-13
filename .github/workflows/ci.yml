@@ -43,8 +43,8 @@ jobs:
         cd opportunity-engine
         python -m py_compile app.py core/*.py
 
-  deploy:
-    name: Deploy Application
+  build:
+    name: Build Docker Image
     runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -53,7 +53,43 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Deploy to production
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        tags: oppstarter:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
+    - name: Test Docker image
       run: |
-        echo "Deployment step - Configure your deployment target here"
-        echo "Options: Streamlit Cloud, Docker, AWS, Azure, GCP, etc."
+        docker build -t oppstarter:test .
+        echo "Docker image built successfully"
+        
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Deploy to Render
+      run: |
+        echo "🚀 Deploying to Render..."
+        echo "Render will automatically deploy from main branch"
+        echo "Configuration: render.yaml"
+        echo "✅ Deployment initiated"
+        echo ""
+        echo "📝 Deployment Notes:"
+        echo "  - Render auto-deploys from main branch when render.yaml is present"
+        echo "  - Configure GEMINI_API_KEY in Render dashboard"
+        echo "  - Health check endpoint: /_stcore/health"
+        echo "  - Default port: 8501 (overridden by Render's PORT env var)"

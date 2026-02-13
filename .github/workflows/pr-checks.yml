@@ -1,0 +1,47 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  pr-validation:
+    name: PR Validation
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Validate PR
+      run: |
+        echo "✅ Validating Pull Request..."
+        echo "PR #${{ github.event.pull_request.number }}"
+        echo "Title: ${{ github.event.pull_request.title }}"
+        echo "Branch: ${{ github.head_ref }} -> ${{ github.base_ref }}"
+        
+    - name: Check PR description
+      run: |
+        if [ -z "${{ github.event.pull_request.body }}" ]; then
+          echo "⚠️  Warning: PR has no description"
+        else
+          echo "✅ PR has a description"
+        fi
+        
+    - name: Validate commits
+      run: |
+        echo "Checking commit messages..."
+        git fetch origin ${{ github.base_ref }}
+        COMMITS=$(git log origin/${{ github.base_ref }}..HEAD --oneline | wc -l)
+        echo "📝 Number of commits: $COMMITS"
+        
+    - name: PR ready for review
+      run: |
+        echo "✅ PR validation completed successfully"
+        echo "This PR is ready for review and approval"

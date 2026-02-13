@@ -65,11 +65,12 @@ jobs:
         tags: oppstarter:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        load: true
         
     - name: Test Docker image
       run: |
-        docker build -t oppstarter:test .
-        echo "Docker image built successfully"
+        echo "Docker image built successfully with cache"
+        docker images oppstarter:latest
         
   deploy:
     name: Deploy to Render

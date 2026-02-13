@@ -13,7 +13,36 @@ st.set_page_config(page_title="מנוע-הזדמנויות", layout="wide")
 st.markdown(
     """
     <style>
-      body, .stApp {direction: rtl; text-align: right;}
+      html, body,
+      [data-testid="stAppViewContainer"],
+      [data-testid="stHeader"],
+      [data-testid="stSidebar"],
+      .stApp {
+        direction: rtl;
+        text-align: right;
+      }
+      [data-testid="stSidebar"] * {
+        direction: rtl;
+        text-align: right;
+      }
+      h1, h2, h3, h4, h5, h6, p, label, span, div {
+        text-align: right;
+      }
+      .stTextInput input,
+      .stTextArea textarea,
+      .stSelectbox div[data-baseweb="select"],
+      .stMultiSelect div[data-baseweb="select"],
+      .stDateInput input,
+      .stNumberInput input,
+      .stDataFrame,
+      .stTable {
+        direction: rtl;
+        text-align: right;
+      }
+      .stMarkdown, .stAlert, .stMetric {
+        direction: rtl;
+        text-align: right;
+      }
       .kpi {background: #f4f7fb; border-radius: 12px; padding: 12px;}
       .sev-critical {color: #c62828; font-weight:700;}
       .sev-high {color: #ef6c00; font-weight:700;}
@@ -41,6 +70,7 @@ except DataValidationError as e:
 
 st.sidebar.subheader("Data Quality Panel")
 st.sidebar.caption(render_quality_text(data.quality))
+st.sidebar.caption("ב-Tasks ניתן לספק עמודת תאריך בשם ExpectedDate או DueDate (וגם וריאציות נתמכות נוספות).")
 
 if data.tasks.empty:
     tasks = events_to_tasks(data.events, data.customers, data.accounts)
